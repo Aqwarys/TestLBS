@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Send Money{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card mx-auto p-4 shadow-lg" style="max-width: 500px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 15px; color: white;">
+        <h2 class="text-center mb-4">Send Money</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="id_receiver_card_number" class="form-label">Receiver Card Number</label>
+                {{ form.receiver_card_number }}
+            </div>
+            <div class="mb-3">
+                <label for="id_amount" class="form-label">Amount</label>
+                {{ form.amount }}
+            </div>
+            <div class="mb-3">
+                <label for="id_comment" class="form-label">Comment</label>
+                {{ form.comment }}
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Send Money</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

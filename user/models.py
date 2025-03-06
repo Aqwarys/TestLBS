@@ -39,3 +39,8 @@ class BankAccount(models.Model):
         if not self.expiration_date:
             self.expiration_date = generate_expiration_date()
         super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.owner.username}'s bank account"
+
+

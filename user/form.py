@@ -9,5 +9,11 @@ class UserRegestrationForm(UserCreationForm):
 
 
 class UserLoginForm(forms.Form):
-    username = forms.CharField(max_length=150, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    email = forms.CharField(max_length=150, widget=forms.TextInput(attrs={'class': 'form-control'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+
+class SendMoneyForm(forms.Form):
+    receiver_card_number = forms.CharField(max_length=16, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    amount = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
+    comment = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control'}))
+    

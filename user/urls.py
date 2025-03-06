@@ -5,4 +5,5 @@ urlpatterns = [
     path('regestration/', views.UserRegestrationView.as_view(), name="regestration"),
     path('login/', views.user_login, name="login"),
     path('logout/', views.CustomLogoutView.as_view(), name='logout'),
+    path('send_money/', views.send_money, name="send_money"),
 ]

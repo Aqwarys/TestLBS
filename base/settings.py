@@ -39,9 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-
+    #apps
     'user.apps.UserConfig',
     'main.apps.MainConfig',
+    'banksystem.apps.BanksystemConfig',
 ]
 
 MIDDLEWARE = [
@@ -105,9 +106,10 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',  # Обычная аутентификация по username
-    'django.contrib.auth.backends.AllowAllUsersModelBackend',  # Проверка по email
+    'user.backends.EmailBackend',  # Наш новый backend
+    'django.contrib.auth.backends.ModelBackend',  # Стандартный backend
 ]
+
 
 
 # Internationalization

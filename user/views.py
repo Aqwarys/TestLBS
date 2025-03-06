@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from .form import UserRegestrationForm, UserLoginForm
+from .form import UserRegestrationForm, UserLoginForm, SendMoneyForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth.models import User
+from banksystem.models import Transactions
 
 from django.views.generic.edit import CreateView
 
@@ -32,16 +33,16 @@ class UserRegestrationView(CreateView):
         return response
 
 class CustomLogoutView(LogoutView):
-    next_page = reverse_lazy('user:regestration')
+    next_page = reverse_lazy('user:login')
 
 
 def user_login(request):
     if request.method == 'POST':
         form = UserLoginForm(request.POST)
         if form.is_valid():
-            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
             password = form.cleaned_data['password']
-            user = authenticate(request, username=username, password=password)
+            user = authenticate(request, username=email, password=password)
             print(user)
             if user is not None and user.check_password(password):
                 login(request, user)
@@ -50,3 +51,25 @@ def user_login(request):
         'form': UserLoginForm
     }
     return render(request, 'user/login.html', context=context)
+
+
+def send_money(request):
+    if request.method == 'POST':
+        form = SendMoneyForm(request.POST)
+        if form.is_valid():
+            receiver_card_number = form.cleaned_data['receiver_card_number']
+            amount = form.cleaned_data['amount']
+            comment = form.cleaned_data['comment']
+            reveiver_user = BankAccount.objects.filter(card_number=receiver_card_number).first()
+            if reveiver_user:
+                reveiver_user.balance += amount
+                reveiver_user.save()
+                sender_user = BankAccount.objects.filter(owner=request.user).first()
+                sender_user.balance -= amount
+                sender_user.save()
+                Transactions.objects.create(sender=sender_user, recipient=reveiver_user, amount=amount, comment=comment)
+                return redirect(reverse_lazy('main:main'))
+    context = {
+        'form': SendMoneyForm
+    }
+    return render(request, 'user/send_money.html', context=context)
